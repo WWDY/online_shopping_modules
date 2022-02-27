@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: online-shopping-gateway
+  cloud:
+    nacos:
+      server-addr: https://www.wwdy.site
+      discovery:
+        namespace: ecbe6c86-05de-464f-86cc-f6ca84dceb6c
+      config:
+        group: DEFAULT_GROUP
+        namespace: ecbe6c86-05de-464f-86cc-f6ca84dceb6c
+        file-extension: yaml
+        name: gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

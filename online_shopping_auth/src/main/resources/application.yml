@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+logging:
+  file:
+    path: logs/online_shopping_auth
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB
+
+aliyun:
+  message:
+    appcode: 68ca3f0d89e448f8999c1f90bb3c0dbb
+    url: https://intlsms.market.alicloudapi.com/comms/sms/sendmsgall
+jwt:
+  jwt-secret: UWZSXNZA6M7ZCMCQPH89FRN3M7CD8V2FDAF5A75C497C418A90E5F4FB3A861CEB
+  jwt-expiration-in-ms: 86400000
+
+page:
+  login-url: https://www.wwdy.site
+
+
+
+
+
+
+
+

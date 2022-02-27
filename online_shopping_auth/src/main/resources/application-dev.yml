@@ -1,0 +1,51 @@
+spring:
+  redis:
+    password: wdy707000
+    client-type: lettuce
+    cluster:
+      nodes: www.wwdy.site:7000,www.wwdy.site:7001,www.wwdy.site:7002
+      max-redirects: 3
+    lettuce:
+      pool:
+        max-idle: 16
+        min-idle: 1
+        max-active: 16
+        enabled: true
+        max-wait: -1
+      cluster:
+        refresh:
+          adaptive: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://www.wwdy.site:3306/online_shopping?serverTimezone=GMT%2B8
+    username: root
+    password: wdy123
+    druid:
+      stat-view-servlet:
+        enabled: true
+        url-pattern: "/druid/*"
+        # 禁用HTML页面上的reset all 功能
+        reset-enable: false
+        login-username: wdy
+        login-password: 123456
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      filter:
+        stat:
+          db-type: mysql
+          enabled: true
+        wall:
+          enabled: true
+        slf4j:
+          enabled: true
+          connection-log-enabled: true
+          connection-rollback-after-log-enabled: true
+          connection-commit-after-log-enabled: true
+
+
+

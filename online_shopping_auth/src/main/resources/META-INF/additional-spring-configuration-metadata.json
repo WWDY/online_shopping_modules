@@ -1,0 +1,83 @@
+{
+  "properties": [
+    {
+      "name": "aliyun.message.expire-minutes",
+      "type": "java.lang.String",
+      "description": "Message code limit minutes.",
+      "sourceType": "com.wwdy.auth.config.MessageConfigProperties",
+      "defaultValue": "5"
+    },
+    {
+      "name": "aliyun.message.url",
+      "type": "java.lang.String",
+      "sourceType": "com.wwdy.auth.config.MessageConfigProperties",
+      "description": "Message server's URL."
+    },
+    {
+      "name": "aliyun.message.appcode",
+      "type": "java.lang.String",
+      "sourceType": "com.wwdy.auth.config.MessageConfigProperties",
+      "description": "Message sent author header's code."
+    },
+    {
+      "name": "aliyun.message.template-id",
+      "type": "java.lang.String",
+      "sourceType": "com.wwdy.auth.config.MessageConfigProperties",
+      "description": "Message send template ID.",
+      "defaultValue": "0000000"
+    },
+    {
+      "name": "jwt.jwt-secret",
+      "type": "java.lang.String",
+      "description": "Description for jwt.jwt-secret."
+    },
+    {
+      "name": "jwt.jwt-expiration-in-ms",
+      "type": "java.lang.Long",
+      "description": "Description for jwt.jwt-expiration-in-ms.",
+      "defaultValue": 86400000
+    },
+    {
+      "name": "page.login-url",
+      "type": "java.lang.String",
+      "description": "SSO Login page address url."
+    }
+  ],
+  "hints": [
+    {
+      "name": "aliyun.message.template-id",
+      "values": [
+        {
+          "value": "0000000",
+          "description": "Default template ID."
+        }
+      ]
+    },
+    {
+      "name": "aliyun.message.expire-minutes",
+      "values": [
+        {
+          "value": "5",
+          "description": "Default limit time."
+        }
+      ]
+    },
+    {
+      "name": "jwt.jwt-expiration-in-ms",
+      "values": [
+        {
+          "value": 86400000,
+          "description": "24 hours."
+        },
+        {
+          "value": 43200000,
+          "description": "12 hours."
+        },
+        {
+          "value": 3600000,
+          "description": "1 hours."
+        }
+      ]
+    }
+  ]
+}
