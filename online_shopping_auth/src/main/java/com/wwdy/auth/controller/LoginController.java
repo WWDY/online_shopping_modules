@@ -20,8 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private final UserService userService;
-    
 
+    /**
+     * 登录页面地址
+     */
     @Value("${page.login-url}")
     private String loginUrl;
 
