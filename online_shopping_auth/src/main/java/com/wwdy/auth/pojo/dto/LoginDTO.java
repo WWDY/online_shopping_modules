@@ -2,7 +2,6 @@ package com.wwdy.auth.pojo.dto;
 
 import lombok.Data;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -23,10 +22,4 @@ public class LoginDTO {
      */
     @NotEmpty(message = "密码不能为空")
     private String password;
-
-    /**
-     * 返回请求
-     */
-    private HttpServletResponse response;
-
 }

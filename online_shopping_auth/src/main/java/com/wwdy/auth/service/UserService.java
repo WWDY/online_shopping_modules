@@ -2,6 +2,7 @@ package com.wwdy.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wwdy.auth.pojo.UserDO;
+import com.wwdy.auth.pojo.dto.LoginByPhoneDTO;
 import com.wwdy.auth.pojo.dto.LoginDTO;
 import com.wwdy.auth.pojo.dto.UserDTO;
 
@@ -19,11 +20,26 @@ public interface UserService extends IService<UserDO> {
     boolean register(UserDTO user);
 
     /**
-     * 登录
+     * 发送验证码
+     * @param phone 手机号码
+     * @param key redisCodePrefixKey
+     * @return String
+     */
+    String sendCode(String phone, String key);
+
+    /**
+     * 登录-账号密码登录
      * @param loginDTO 登录信息
      * @return token
      */
     String login(LoginDTO loginDTO);
+
+    /**
+     * 登录-验证码登录
+     * @param login 登录信息
+     * @return token
+     */
+    String login(LoginByPhoneDTO login);
 
     /**
      * 单点登录

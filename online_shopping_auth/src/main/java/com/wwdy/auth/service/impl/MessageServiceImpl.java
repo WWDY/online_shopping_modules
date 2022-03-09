@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wwdy.auth.config.MessageConfigProperties;
 import com.wwdy.auth.enums.MessageResponseEnum;
+import com.wwdy.auth.enums.RedisCodePrefixKeyEnum;
 import com.wwdy.auth.pojo.dto.SendMessageDTO;
 import com.wwdy.auth.request.RpcRequest;
 import com.wwdy.auth.request.SendMessageRequest;
@@ -37,7 +38,6 @@ public class MessageServiceImpl implements MessageService {
 
     public static final String AUTH_HEADER = "Authorization";
     public static final String AUTH_HEADER_VALUE_PREFIX = "APPCODE ";
-    private static final String REDIS_CODE_PREFIX = "AUTH:CODE:";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final RestTemplate restTemplate;
@@ -64,8 +64,8 @@ public class MessageServiceImpl implements MessageService {
         request.setTemplateParamSet(request.getCode()+","+request.getLimitMinutes());
         SendMessageResponse response = doPostAction(request);
         if(response.getCode().equals(MessageResponseEnum.SUCCESS.getCode())){
-            stringRedisTemplate.opsForValue().set(REDIS_CODE_PREFIX + sendMessageDTO.getSessionId(), sendMessageDTO.getCode(), Long.parseLong(request.getLimitMinutes()), TimeUnit.MINUTES);
-            stringRedisTemplate.opsForValue().set(sendMessageDTO.getSessionId(),sendMessageDTO.getCode(), 1L, TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(sendMessageDTO.getKey() + sendMessageDTO.getPhone(), sendMessageDTO.getCode(), Long.parseLong(request.getLimitMinutes()), TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(RedisCodePrefixKeyEnum.SEND_CODE_LIMIT_FREQUENCY.getKey() + sendMessageDTO.getPhone(), sendMessageDTO.getCode(), 1L, TimeUnit.MINUTES);
         }
         log.info("[send code success] =====> send status:{}",response);
         return response;

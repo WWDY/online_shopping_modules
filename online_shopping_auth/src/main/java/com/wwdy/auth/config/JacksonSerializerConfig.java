@@ -37,14 +37,4 @@ public class JacksonSerializerConfig {
         return new MappingJackson2HttpMessageConverter(objectMapper);
     }
 
-
-
-    /*@Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(){
-        return builder -> builder.serializerByType(LocalDateTime.class, new JacksonSerializer.LocalDateTimeJsonSerializer())
-                .deserializerByType(LocalDateTime.class, new JacksonSerializer.LocalDateTimeJsonDeserializer())
-                .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-    }*/
-
 }

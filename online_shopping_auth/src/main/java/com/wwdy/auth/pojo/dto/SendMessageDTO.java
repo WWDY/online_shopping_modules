@@ -20,7 +20,7 @@ public class SendMessageDTO {
     private String phone;
 
     /**
-     * sessionId
+     * 验证码类型
      */
-    private String sessionId;
+    private String key;
 }
