@@ -3,7 +3,7 @@ spring:
     name: online-shopping-gateway
   cloud:
     nacos:
-      server-addr: https://www.wwdy.site
+      server-addr: www.wwdy.site:8888
       discovery:
         namespace: ecbe6c86-05de-464f-86cc-f6ca84dceb6c
       config:

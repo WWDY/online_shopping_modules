@@ -151,10 +151,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         for (Cookie cookie : cookies) {
             if(StrUtil.equals(cookie.getName(),SSO_TOKEN_COOKIE_NAME)){
                 String token = cookie.getValue();
+                System.out.println(token);
                 try {
                     Claims claims = jwtParser.parseClaimsJws(token).getBody();
                     String username = claims.getId();
-                    UserDO user = baseMapper.selectOne(new QueryWrapper<UserDO>().eq("username", username));
+                    UserDO user = baseMapper.selectById(username);
                     if (Optional.ofNullable(user).isPresent()) {
                         String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
                         String redisToken = stringRedisTemplate.opsForValue().get(key);
@@ -201,20 +202,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
     }
 
     /**
+     * 判断手机号是否被注册
+     * @param phone 手机号
+     * @return boolean
+     */
+    @Override
+    public boolean phoneIsExist(String phone) {
+        return baseMapper.selectOne(new QueryWrapper<UserDO>().eq("phone",phone)) != null;
+    }
+
+    /**
      * 下发令牌
      * @return token
      */
     protected String signToken(UserDO user){
         Claims claims = Jwts.claims()
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfigProperties.getJwtExpirationInMs()))
-                .setId(user.getUsername())
+                .setId(String.valueOf(user.getId()))
                 .setSubject("login")
                 .setIssuedAt(new Date());
         String token = jwtBuilder.setClaims(claims).compact();
+        System.out.println("<<<<<<<<<<<<<"+token);
         String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
         stringRedisTemplate.opsForValue().set(key, token, jwtConfigProperties.getJwtExpirationInMs(), TimeUnit.MILLISECONDS);
         //添加登录凭证
         Cookie cookie = new Cookie(SSO_TOKEN_COOKIE_NAME,token);
+        cookie.setPath("/");
         HttpServletResponse response = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getResponse();
         assert response != null;
         response.addCookie(cookie);

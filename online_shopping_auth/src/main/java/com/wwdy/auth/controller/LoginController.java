@@ -8,16 +8,17 @@ import com.wwdy.auth.pojo.dto.LoginDTO;
 import com.wwdy.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import result.ResultUtil;
 import result.vo.ResultVO;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author wwdy
  * @date 2022/2/23 17:20
  */
-@Controller
+@RestController
 @RequestMapping("/api/login")
 @RequiredArgsConstructor
 public class LoginController {
@@ -35,31 +36,15 @@ public class LoginController {
     /**
      * 登录-账号密码登录
      * @param loginDTO 登录信息
-     * @return callBackUrl
+     * @return ResultVO<String>
      */
     @PostMapping("/")
-    public String login(@RequestBody LoginDTO loginDTO,
-                        @RequestParam("callBack")String callBack){
+    public ResultVO<String> login(@RequestBody LoginDTO loginDTO){
         String token = userService.login(loginDTO);
         if (StrUtil.isNotEmpty(token)) {
-            return StrUtil.format("redirect:{}?token={}",callBack,token);
+            return ResultUtil.success(token);
         }
-        return StrUtil.format("redirect:{}",loginUrl);
-    }
-
-    /**
-     * 登录-验证码登录
-     * @param login 登录信息
-     * @return callBackUrl
-     */
-    @PostMapping("/phone")
-    public String login(@RequestBody LoginByPhoneDTO login,
-                        @RequestParam("callBack")String callBack) {
-        String token = userService.login(login);
-        if (StrUtil.isNotEmpty(token)) {
-            return StrUtil.format("redirect:{}?token={}",callBack,token);
-        }
-        return StrUtil.format("redirect:{}",loginUrl);
+        return ResultUtil.error("登录失败");
     }
 
     /**
@@ -81,26 +66,42 @@ public class LoginController {
     }
 
     /**
+     * 登录-验证码登录
+     * @param login 登录信息
+     * @return ResultVO<String>
+     */
+    @PostMapping("/phone")
+    public ResultVO<String> login(@RequestBody LoginByPhoneDTO login) {
+        String token = userService.login(login);
+        if (StrUtil.isNotEmpty(token)) {
+            return ResultUtil.success(token);
+        }
+        return ResultUtil.error("登录失败");
+    }
+
+    /**
      * sso单点登录
-     * @return callBackUrl
+     * @return ResultVO<String>
      */
     @GetMapping("/sso")
-    public String sso(@RequestParam("callBack")String callBack) {
+    public ResultVO<String> sso(HttpServletResponse response) {
         String token = userService.sso();
         if (StrUtil.isNotEmpty(token)) {
-            return StrUtil.format("redirect:{}?token={}",callBack,token);
+            return ResultUtil.success(token);
         }
-        return StrUtil.format("redirect:{}",loginUrl);
+        response.addHeader("Location",loginUrl);
+        return ResultUtil.error();
     }
 
     /**
      * 注销登录
-     * @return loginPage
+     * @return ResultVO<String>
      */
     @GetMapping("/logout")
-    public String sso(){
+    public ResultVO<String> logout(HttpServletResponse response){
         userService.logout();
-        return StrUtil.format("redirect:{}",loginUrl);
+        response.addHeader("Location",loginUrl);
+        return ResultUtil.success("注销成功");
     }
 
 }

@@ -51,4 +51,11 @@ public interface UserService extends IService<UserDO> {
      * 注销登录
      */
     void logout();
+
+    /**
+     * 判断手机号是否被注册
+     * @param phone 手机号
+     * @return boolean
+     */
+    boolean phoneIsExist(String phone);
 }

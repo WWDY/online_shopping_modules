@@ -44,6 +44,6 @@ public class UserDTO {
      * 验证码
      */
     @NotEmpty(message = "验证码不能为空")
-    @Pattern(regexp = "[0-9]{4}",message = "验证码不合法")
+    @Pattern(regexp = "^\\d{4}$",message = "验证码不合法")
     private String code;
 }
