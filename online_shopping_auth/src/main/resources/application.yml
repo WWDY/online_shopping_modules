@@ -21,7 +21,7 @@ jwt:
   jwt-expiration-in-ms: 86400000
 
 page:
-  login-url: https://www.wwdy.site
+  login-url: http://localhost
 
 
 

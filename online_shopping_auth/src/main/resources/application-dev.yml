@@ -47,5 +47,3 @@ spring:
           connection-rollback-after-log-enabled: true
           connection-commit-after-log-enabled: true
 
-
-
