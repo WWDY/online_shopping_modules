@@ -22,7 +22,8 @@ public enum ResultEnum {
     HTTP_MEDIA_TYPE_NOT_SUPPORTED_ERROR(10002004, "不支持的互联网媒体类型，请检查 API 或联系管理员"),
     AUTHENTICATION(10004001, "很抱歉, 用户认证失效"),
     AUTHORIZATION(10004003, "很抱歉, 暂无权限操作"),
-    MESSAGE_CODE_ERROR(10005001,"验证码不正确");
+    MESSAGE_CODE_ERROR(10005001,"验证码不正确"),
+    PHONE_IS_EXIST(10006001,"手机号已存在");
 
     private final Integer code;
     private final String message;

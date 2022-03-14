@@ -1,1 +1,23 @@
-{ "properties": [ ] }
+{
+  "properties": [
+    {
+      "name": "aliyun.oss.endpoint",
+      "type": "java.lang.String",
+      "description": "aliyun.oss.endpoint Such as https://oss-cn-hangzhou.aliyuncs.com."
+    },
+    {
+      "name": "aliyun.oss.accessKeyId",
+      "type": "java.lang.String",
+      "description": "your aliyun.oss.accessKeyId."
+    },
+    {
+      "name": "aliyun.oss.accessKeySecret",
+      "type": "java.lang.String",
+      "description": "your aliyun.oss.accessKeySecret."
+    },
+    {
+      "name": "aliyun.oss.bucket-name",
+      "type": "java.lang.String",
+      "description": "your aliyun.oss.bucket-name."
+    }
+  ] }

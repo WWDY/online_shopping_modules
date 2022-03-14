@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "aliyun.oss")
 @Data
-public class OssConfig {
+public class OssConfigProperties {
     /**
      * endpoint
      */
@@ -36,4 +36,9 @@ public class OssConfig {
      * host
      */
     private String host;
+
+    /**
+     * expireTime
+     */
+    private Long expireTime;
 }

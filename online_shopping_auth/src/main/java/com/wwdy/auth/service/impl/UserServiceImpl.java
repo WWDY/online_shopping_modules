@@ -8,6 +8,7 @@ import com.wwdy.auth.config.JwtConfigProperties;
 import com.wwdy.auth.converter.UserConverter;
 import com.wwdy.auth.enums.MessageResponseEnum;
 import com.wwdy.auth.enums.RedisCodePrefixKeyEnum;
+import com.wwdy.auth.event.DelUsedCodeEvent;
 import com.wwdy.auth.exception.CodeErrorException;
 import com.wwdy.auth.mapper.UserMapper;
 import com.wwdy.auth.pojo.UserDO;
@@ -21,6 +22,7 @@ import com.wwdy.auth.service.UserService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
     private final JwtParser jwtParser;
     private final UserConverter userConverter;
     private final MessageService messageService;
+    private final ApplicationContext applicationContext;
 
     private static final String JWT_TOKEN_PREFIX = "AUTH:LOGIN:";
     private static final String SSO_TOKEN_COOKIE_NAME = "SSO-Token";
@@ -70,6 +73,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String code = stringRedisTemplate.opsForValue().get(RedisCodePrefixKeyEnum.REGISTER_CODE.getKey() + user.getPhone());
         if(StrUtil.equals(code,user.getCode())){
+            applicationContext.publishEvent(
+                    new DelUsedCodeEvent(
+                            DelUsedCodeEvent.DelUsedCodeEventData.builder()
+                                    .keyPrefix(RedisCodePrefixKeyEnum.REGISTER_CODE.getKey())
+                                    .phone(user.getPhone())
+                                    .code(user.getCode())
+                                    .build()
+                    )
+            );
             return save(userConverter.convert(user));
         }
         throw new CodeErrorException("验证码错误");
@@ -135,6 +147,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         String code = stringRedisTemplate.opsForValue().get(RedisCodePrefixKeyEnum.LOGIN_CODE.getKey() + login.getPhone());
         if (StrUtil.isNotEmpty(code) && StrUtil.equals(code,login.getCode())) {
             UserDO user = baseMapper.selectOne(new QueryWrapper<UserDO>().eq("phone", login.getPhone()));
+            applicationContext.publishEvent(
+                    new DelUsedCodeEvent(
+                            DelUsedCodeEvent.DelUsedCodeEventData.builder()
+                                    .keyPrefix(RedisCodePrefixKeyEnum.LOGIN_CODE.getKey())
+                                    .phone(login.getPhone())
+                                    .code(login.getCode())
+                                    .build()
+                    )
+            );
             return signToken(user);
         }
         return null;
@@ -222,7 +243,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
                 .setSubject("login")
                 .setIssuedAt(new Date());
         String token = jwtBuilder.setClaims(claims).compact();
-        System.out.println("<<<<<<<<<<<<<"+token);
         String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
         stringRedisTemplate.opsForValue().set(key, token, jwtConfigProperties.getJwtExpirationInMs(), TimeUnit.MILLISECONDS);
         //添加登录凭证

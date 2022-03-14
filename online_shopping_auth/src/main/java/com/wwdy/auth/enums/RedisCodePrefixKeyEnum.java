@@ -1,5 +1,6 @@
 package com.wwdy.auth.enums;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 
 /**
@@ -17,6 +18,20 @@ public enum RedisCodePrefixKeyEnum {
     SEND_CODE_LIMIT_FREQUENCY("AUTH:CODE:SEND:");
 
     private final String key;
+
+    /**
+     * 获取枚举值
+     * @param key 枚举key
+     * @return String
+     */
+    public static String getLabel(String key){
+        for (RedisCodePrefixKeyEnum value : values()) {
+            if (StrUtil.equals(value.key,key)) {
+                return value.name();
+            }
+        }
+        return key;
+    }
 
     RedisCodePrefixKeyEnum(String key){
         this.key = key;

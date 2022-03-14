@@ -8,6 +8,9 @@
     <artifactId>online_shopping</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>online_shopping_auth</module>
+        <module>online_shopping_gateway</module>
+        <module>online_shopping_oss</module>
         <module>commons</module>
     </modules>
 
@@ -66,17 +69,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.wwdy</groupId>
-            <artifactId>commons</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
@@ -91,7 +83,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.7.21</version>
+            <version>5.7.22</version>
         </dependency>
 
         <dependency>
@@ -105,28 +97,14 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>3.14.0</version>
+            </dependency>
+            <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>3.14.9</version>
-            </dependency>
-            <dependency>
-                <groupId>com.wwdy</groupId>
-                <artifactId>commons</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-databind</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-annotations</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>

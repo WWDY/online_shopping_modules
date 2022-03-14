@@ -1,4 +1,4 @@
-package com.wwdy.auth.config;
+package com.wwdy.config;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;

@@ -32,7 +32,6 @@ public class LoginController {
     private String loginUrl;
 
 
-
     /**
      * 登录-账号密码登录
      * @param loginDTO 登录信息
