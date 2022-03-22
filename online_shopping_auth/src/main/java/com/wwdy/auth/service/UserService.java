@@ -58,4 +58,11 @@ public interface UserService extends IService<UserDO> {
      * @return boolean
      */
     boolean phoneIsExist(String phone);
+
+    /**
+     * 通过token获取用户信息
+     * @param token token
+     * @return UserDO
+     */
+    UserDO getUserByToken(String token);
 }

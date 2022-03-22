@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
         error.setDomain(domain);
         error.setException(e.getClass().getName());
         error.addError("", e.getMessage());
-        log.error("MethodType error ===> request_url = {}",request.getRequestURL());
+        log.error("MethodType error ===> request_url = {} ===> MethodType = {}",request.getRequestURL(),request.getMethod());
         return ResultUtil.error(ResultEnum.HTTP_REQUEST_METHOD_NOT_SUPPORTED_ERROR, error);
     }
 

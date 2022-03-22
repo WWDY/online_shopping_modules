@@ -3,6 +3,7 @@ package com.wwdy.auth.controller;
 import cn.hutool.core.util.StrUtil;
 import com.wwdy.auth.enums.MessageResponseEnum;
 import com.wwdy.auth.enums.RedisCodePrefixKeyEnum;
+import com.wwdy.auth.pojo.UserDO;
 import com.wwdy.auth.pojo.dto.LoginByPhoneDTO;
 import com.wwdy.auth.pojo.dto.LoginDTO;
 import com.wwdy.auth.service.UserService;
@@ -101,6 +102,17 @@ public class LoginController {
         userService.logout();
         response.addHeader("Location",loginUrl);
         return ResultUtil.success("注销成功");
+    }
+
+    /**
+     * 通过token获取用户信息
+     * @param token token
+     * @return ResultVO<UserDO>
+     */
+    @GetMapping("/info")
+    public ResultVO<UserDO> getUserInfoByToken(@RequestParam("token") String token){
+        UserDO user = userService.getUserByToken(token);
+        return ResultUtil.success(user);
     }
 
 }

@@ -3,7 +3,7 @@ spring:
     password: wdy707000
     client-type: lettuce
     cluster:
-      nodes: www.wwdy.site:7000,www.wwdy.site:7001,www.wwdy.site:7002
+      nodes: 82.157.178.60:7000,82.157.178.60:7001,82.157.178.60:7002
       max-redirects: 3
     lettuce:
       pool:
@@ -18,7 +18,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://www.wwdy.site:3306/online_shopping?serverTimezone=GMT%2B8
+    url: jdbc:mysql://82.157.178.60:3306/online_shopping?serverTimezone=GMT%2B8
     username: root
     password: wdy123
     druid:
@@ -47,3 +47,13 @@ spring:
           connection-rollback-after-log-enabled: true
           connection-commit-after-log-enabled: true
 
+aliyun:
+  message:
+    appcode: 68ca3f0d89e448f8999c1f90bb3c0dbb
+    url: https://intlsms.market.alicloudapi.com/comms/sms/sendmsgall
+jwt:
+  jwt-secret: UWZSXNZA6M7ZCMCQPH89FRN3M7CD8V2FDAF5A75C497C418A90E5F4FB3A861CEB
+  jwt-expiration-in-ms: 86400000
+
+page:
+  login-url: http://localhost

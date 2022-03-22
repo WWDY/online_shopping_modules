@@ -1,27 +1,15 @@
-spring:
-  cloud:
-    gateway:
-      enabled: true
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowed-origin-patterns: "*"
-            allowed-methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - PATCH
-            allowed-headers: "*"
-            allow-credentials: true
-            max-age: 3600
-      routes:
-        - id: auth_module
-          uri: lb://online-shopping-auth
-          predicates:
-            - Path=/api/auth/**
-          filters:
-            - RewritePath=/api/auth/?(?<segment>.*), /api/$\{segment}
-
 server:
-  port: 10001
+  port: 10000
+
+spring:
+  profiles:
+    active: dev
+
+logging:
+  file:
+    path: logs/online_shopping_gateway
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB

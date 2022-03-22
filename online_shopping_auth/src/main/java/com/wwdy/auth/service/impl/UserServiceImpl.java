@@ -28,7 +28,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import static constant.JwtConstant.*;
 
 /**
  * @author wwdy
@@ -56,10 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
     private final MessageService messageService;
     private final ApplicationContext applicationContext;
 
-    private static final String JWT_TOKEN_PREFIX = "AUTH:LOGIN:";
     private static final String SSO_TOKEN_COOKIE_NAME = "SSO-Token";
-    public static final String HEADER_NAME = "Authorization";
-    public static final String HEADER_START = "Bearer ";
     private static final String PHONE_REG = "^(?:(?:\\+|00)86)?1(?:3[\\d]|4[5-7|9]|5[0-3|5-9]|6[5-7]|7[0-8]|8[\\d]|9[1|89])\\d{8}$";
 
 
@@ -172,7 +169,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         for (Cookie cookie : cookies) {
             if(StrUtil.equals(cookie.getName(),SSO_TOKEN_COOKIE_NAME)){
                 String token = cookie.getValue();
-                System.out.println(token);
                 try {
                     Claims claims = jwtParser.parseClaimsJws(token).getBody();
                     String username = claims.getId();
@@ -252,5 +248,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         assert response != null;
         response.addCookie(cookie);
         return token;
+    }
+
+    /**
+     * 通过token获取用户信息
+     * @param token token
+     * @return UserDO
+     */
+    @Override
+    public UserDO getUserByToken(String token) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            String username = claims.getId();
+            UserDO user = baseMapper.selectById(username);
+            if (Optional.ofNullable(user).isPresent()) {
+                return user;
+            }
+        }catch (SecurityException ex) {
+            log.warn("Invalid JWT signature: token = {}", token);
+        } catch (MalformedJwtException ex) {
+            log.warn("Invalid JWT token: token = {}", token);
+        } catch (UnsupportedJwtException ex) {
+            log.warn("Unsupported JWT token: token = {}", token);
+        } catch (IllegalArgumentException ex) {
+            log.warn("JWT claims string is empty: token = {}", token);
+        } catch (ExpiredJwtException ex) {
+            log.warn("JWT is expired: token = {}", token);
+        }
+        return null;
     }
 }

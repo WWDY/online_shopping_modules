@@ -1,6 +1,6 @@
 package com.wwdy;
 
-import com.wwdy.service.OssService;
+import com.wwdy.oss.service.OssService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

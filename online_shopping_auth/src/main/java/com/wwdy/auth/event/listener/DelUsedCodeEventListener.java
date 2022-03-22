@@ -22,7 +22,8 @@ public class DelUsedCodeEventListener {
 
     @Async
     @EventListener
-    public void delUsedCode(DelUsedCodeEvent.DelUsedCodeEventData delUsedCodeEventData){
+    public void delUsedCode(DelUsedCodeEvent delUsedCodeEvent){
+        DelUsedCodeEvent.DelUsedCodeEventData delUsedCodeEventData = delUsedCodeEvent.getDelUsedCodeEventData();
         String key = delUsedCodeEventData.getKeyPrefix() + delUsedCodeEventData.getPhone();
         stringRedisTemplate.delete(key);
         log.info("验证码已使用,手机号={},类型={},验证码={}", delUsedCodeEventData.getPhone(), RedisCodePrefixKeyEnum.getLabel(delUsedCodeEventData.getKeyPrefix()), delUsedCodeEventData.getCode());

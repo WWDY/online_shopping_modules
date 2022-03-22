@@ -10,7 +10,8 @@ spring:
         group: DEFAULT_GROUP
         namespace: ecbe6c86-05de-464f-86cc-f6ca84dceb6c
         file-extension: yaml
-        name: oss
+        name: oss-dev
+
 
 management:
   endpoints:

@@ -11,6 +11,7 @@
         <module>online_shopping_auth</module>
         <module>online_shopping_gateway</module>
         <module>online_shopping_oss</module>
+        <module>online_shopping_admin</module>
         <module>commons</module>
     </modules>
 
@@ -96,6 +97,25 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.13</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-httpclient</artifactId>
+                <version>11.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>1.4.2.Final</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
@@ -165,6 +185,10 @@
                     <exclusion>
                         <groupId>com.alibaba.nacos</groupId>
                         <artifactId>nacos-client</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

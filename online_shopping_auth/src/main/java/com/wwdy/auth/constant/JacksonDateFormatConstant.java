@@ -19,4 +19,5 @@ public class JacksonDateFormatConstant {
      * Time格式化字符串
      */
     public static final String TIME_FORMAT = "HH:mm:ss";
+
 }

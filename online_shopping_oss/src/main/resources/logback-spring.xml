@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="spring" />
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="logs" />
+    <springProperty scope="context" name="LOGBACK_ROLLINGPOLICY_MAX_HISTORY" source="logging.logback.rollingpolicy.max-history" defaultValue="30" />
+    <springProperty scope="context" name="LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE" source="logging.logback.rollingpolicy.max-file-size" defaultValue="200MB" />
+    <springProperty scope="context" name="LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP" source="logging.logback.rollingpolicy.total-size-cap" defaultValue="10GB" />
+    <property scope="context" name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${APP_NAME},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] [%thread] %logger{50} Line:%-3L - %msg%n" />
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}-error.log</file>
+        <!--滚动策略  基于时间的分包策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- yyyy-MM-dd 时间策略则为一天一个文件 -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <maxFileSize>${LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}-warn.log</file>
+        <!--滚动策略  基于时间的分包策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- yyyy-MM-dd 时间策略则为一天一个文件 -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-warn.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <maxFileSize>${LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}-info.log</file>
+        <!--滚动策略  基于时间的分包策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- yyyy-MM-dd 时间策略则为一天一个文件 -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <maxFileSize>${LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE_INFO" />
+            <appender-ref ref="FILE_WARN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="local">
+        <root level="info">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE_INFO" />
+            <appender-ref ref="FILE_WARN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+    </springProfile>
+
+    <springProfile>
+        <root level="info">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE_INFO" />
+            <appender-ref ref="FILE_WARN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+    </springProfile>
+
+
+    <springProfile name="test">
+        <root level="info">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE_INFO" />
+            <appender-ref ref="FILE_WARN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="info">
+            <appender-ref ref="FILE_INFO" />
+            <appender-ref ref="FILE_WARN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+    </springProfile>
+</configuration>

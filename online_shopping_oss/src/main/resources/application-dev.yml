@@ -1,0 +1,10 @@
+server:
+  port: 9000
+logging:
+  file:
+    path: logs/online_shopping_oss
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB
