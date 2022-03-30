@@ -1,18 +1,15 @@
-package com.wwdy.admin.pojo.update;
+package com.wwdy.admin.pojo.vo;
 
-import com.wwdy.admin.annotation.valid.SpuStatus;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author wwdy
- * @date 2022/3/22 10:45
+ * @date 2022/3/26 17:16
  */
 @Data
-public class SpuUpdate {
+public class SpuVO {
 
-    @NotNull(message = "id不能为空")
+
     private Integer id;
 
     /**
@@ -21,9 +18,14 @@ public class SpuUpdate {
     private String name;
 
     /**
-     * 所属分类
+     * 所属分类id
      */
     private Integer category;
+
+    /**
+     * 所属分类名称
+     */
+    private String categoryName;
 
     /**
      * 描述
@@ -38,7 +40,5 @@ public class SpuUpdate {
     /**
      * 状态
      */
-    @SpuStatus()
     private String status;
-
 }

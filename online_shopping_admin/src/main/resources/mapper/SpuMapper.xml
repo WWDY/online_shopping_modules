@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwdy.admin.mapper.SpuMapper">
+
+    <resultMap id="SpuVO" type="com.wwdy.admin.pojo.vo.SpuVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="category" property="category"/>
+        <result column="description" property="description"/>
+        <result column="weight" property="weight"/>
+        <result column="status" property="status"/>
+        <result column="category_name" property="categoryName"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        spu.id, spu.name, spu.category, spu.description, spu.weight, spu.status, spu.deleted, spu.created_time, spu.updated_time
+    </sql>
+
+    <select id="selectSpuVOList" resultMap="SpuVO">
+        select <include refid="Base_Column_List"/>, c.name category_name
+        from spu left join category c on spu.category = c.id
+            where spu.deleted = 0
+        limit #{offset}, #{size}
+    </select>
+
+    <select id="selectSpuVOAll" resultMap="SpuVO">
+        select <include refid="Base_Column_List"/>, c.name category_name
+        from spu left join category c on spu.category = c.id
+        where spu.deleted = 0
+    </select>
+</mapper>

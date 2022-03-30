@@ -1,7 +1,6 @@
 package com.wwdy.admin.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.wwdy.admin.annotation.valid.SpuStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,11 +10,11 @@ import java.time.LocalDateTime;
 
 /**
  * @author  wwdy
- * @date  2022/3/22 10:41
+ * @date  2022/3/25 13:00
  */
-@TableName(value ="spu")
+@TableName(value ="category")
 @Data
-public class Spu implements Serializable {
+public class Category implements Serializable {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
@@ -23,38 +22,14 @@ public class Spu implements Serializable {
     /**
      * 名称
      */
-    @NotEmpty(message = "名称不能为空")
+    @NotEmpty(message = "标签名称不能为空")
     private String name;
 
     /**
-     * 所属分类
+     * 父标签
      */
-    @NotNull(message = "id不能为空")
-    private Integer category;
-
-    /**
-     * 描述
-     */
-    @NotEmpty(message = "描述不能为空")
-    private String description;
-
-    /**
-     * 重量 g
-     */
-    @NotNull(message = "重量不能为空")
-    private Integer weight;
-
-    /**
-     * 状态
-     */
-    @NotNull(message = "状态不能为空")
-    @SpuStatus
-    private String status;
-
-    /**
-     * 逻辑删除字段
-     */
-    private Integer deleted;
+    @NotNull(message = "父标签不能为空")
+    private Integer parentId;
 
     /**
      * 更新时间
@@ -67,6 +42,11 @@ public class Spu implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
+
+    /**
+     * 删除字段
+     */
+    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

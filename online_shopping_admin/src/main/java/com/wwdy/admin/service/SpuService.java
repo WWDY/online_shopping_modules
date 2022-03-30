@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wwdy.admin.pojo.Spu;
 import com.wwdy.admin.pojo.dto.PageDTO;
+import com.wwdy.admin.pojo.update.SpuUpdate;
+import com.wwdy.admin.pojo.vo.SpuVO;
+
+import java.util.List;
 
 /**
  * @author  wwdy
@@ -30,14 +34,14 @@ public interface SpuService extends IService<Spu> {
      * @param pageDTO 查询信息
      * @return List<Spu>
      */
-    Page<Spu> selectSpuPage(PageDTO pageDTO);
+    Page<SpuVO> selectSpuPage(PageDTO pageDTO);
 
     /**
      * 更新SPU
      * @param update 更新信息
      * @return int
      */
-    int updateSpu();
+    int updateSpu(SpuUpdate update);
 
     /**
      * 通过id删除SPU
@@ -45,5 +49,11 @@ public interface SpuService extends IService<Spu> {
      * @return int
      */
     int delSpu(int id);
+
+    /**
+     * 获取所有spu
+     * @return List<SpuVO>
+     */
+    List<SpuVO> getAll();
 
 }
