@@ -28,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
 import static constant.JwtConstant.*;
 
 /**
@@ -276,5 +278,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
             log.warn("JWT is expired: token = {}", token);
         }
         return null;
+    }
+
+    /**
+     * 签发openfeign token
+     * @return String
+     */
+    @Override
+    public String openFeignTokenSignature() {
+        String redisToken = stringRedisTemplate.opsForValue().get(FEIGN_TOKEN_HEADER_NAME);
+        if(StrUtil.isNotEmpty(redisToken)){
+            return redisToken;
+        }
+        Claims claims = Jwts.claims()
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfigProperties.getJwtExpirationInMs()))
+                .setSubject("openfeign")
+                .setIssuedAt(new Date());
+        String token = jwtBuilder.setClaims(claims).compact();
+        stringRedisTemplate.opsForValue().set(FEIGN_TOKEN_HEADER_NAME, token, jwtConfigProperties.getJwtExpirationInMs(), TimeUnit.MILLISECONDS);
+        return token;
     }
 }

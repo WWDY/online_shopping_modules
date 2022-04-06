@@ -20,4 +20,9 @@ public class JwtConstant {
      * value start
      */
     public static final String HEADER_START = "Bearer ";
+
+    /**
+     * feign key
+     */
+    public static final String FEIGN_TOKEN_HEADER_NAME = "Feign-Token";
 }

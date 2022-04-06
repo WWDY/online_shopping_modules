@@ -101,4 +101,15 @@ public class SpuController {
         List<SpuVO> all = spuService.getAll();
         return ResultUtil.success(all);
     }
+
+    /**
+     * 获取指定id的spu信息
+     * @param ids id
+     * @return List<Spu>
+     */
+    @PostMapping("/ids")
+    public ResultVO<List<Spu>> getSpuByIds(@RequestBody List<Integer> ids){
+        List<Spu> spuList = spuService.getSpuList(ids);
+        return ResultUtil.success(spuList);
+    }
 }

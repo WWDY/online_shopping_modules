@@ -1,5 +1,6 @@
 package com.wwdy.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwdy.admin.converter.CategoryConverter;
 import com.wwdy.admin.exception.NotFoundRecordException;
@@ -82,6 +83,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 .filter(categoryVO -> categoryVO.getParentId() == 0)
                 .peek(categoryVO -> categoryVO.setChildren(setChildrenCategories(categoryVO, categoriesVO)))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取根标签分类
+     * @return List<CategoryVO>
+     */
+    @Override
+    public List<CategoryVO> getRootCategories() {
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id",0);
+        List<Category> categories = baseMapper.selectList(queryWrapper);
+        return categoryConverter.convert(categories);
     }
 
     /**

@@ -57,10 +57,6 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
      */
     @Override
     public Page<SpuVO> selectSpuPage(PageDTO pageDTO) {
-        /*Page<Spu> spu = new Page<>();
-        spu.setSize(pageDTO.getSize());
-        spu.setCurrent(pageDTO.getPage());
-        return baseMapper.selectPage(spu, null);*/
         long offset = (pageDTO.getPage() - 1) * pageDTO.getSize();
         List<SpuVO> spuVO = baseMapper.selectSpuVOList(offset, pageDTO.getSize());
         Page<SpuVO> spuVOPage = new Page<>();
@@ -99,6 +95,17 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     public List<SpuVO> getAll() {
         return baseMapper.selectSpuVOAll();
     }
+
+    /**
+     * 获取指定id的spu信息
+     * @param ids id
+     * @return List<Spu>
+     */
+    @Override
+    public List<Spu> getSpuList(List<Integer> ids) {
+            return baseMapper.selectBatchIds(ids);
+    }
+
 }
 
 

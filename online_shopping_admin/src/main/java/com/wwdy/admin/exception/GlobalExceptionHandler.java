@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
      * @param request 请求
      * @return ResultVO
      */
-    @ExceptionHandler({BindException.class})
+    @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class})
     public ResultVO<NullType> handleBindingException(Exception e, HttpServletRequest request) {
         DataError error = new DataError();
         error.setDomain(domain);
@@ -150,7 +150,7 @@ public class GlobalExceptionHandler {
 
         String message = null;
         if (e instanceof BindException) {
-            BindingResult bindResult = ((MethodArgumentNotValidException) e).getBindingResult();
+            BindingResult bindResult = ((BindException) e).getBindingResult();
             for (FieldError fieldError : bindResult.getFieldErrors()) {
                 error.addError(fieldError.getField(), fieldError.getDefaultMessage());
             }
@@ -158,9 +158,10 @@ public class GlobalExceptionHandler {
                 message = bindResult.getFieldError().getDefaultMessage();
             }
         }
-        log.warn("请求参数非预期异常: domain = {}, {} - {}, error = {} ===> request_url = {}", domain, request.getMethod(), request.getRequestURI(), error,request.getRequestURL());
+        log.warn("请求参数非预期异常: domain = {}, {} - {}, error = {}", domain, request.getMethod(), request.getRequestURI(), error);
         return ResultUtil.error(ResultEnum.PARAM_VALIDATED_UN_PASS.getCode(), message, error);
     }
+
 
 
 

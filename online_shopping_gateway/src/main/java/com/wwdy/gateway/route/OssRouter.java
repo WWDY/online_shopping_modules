@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OssRouter {
 
-    @Bean
+    @Bean("oss_module")
     public RouteLocator ossRoute(RouteLocatorBuilder builder) {
        return builder.routes()
                 .route(predicateSpec ->

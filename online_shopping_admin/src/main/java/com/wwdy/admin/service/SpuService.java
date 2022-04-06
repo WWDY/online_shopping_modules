@@ -32,7 +32,7 @@ public interface SpuService extends IService<Spu> {
     /**
      * 分页查找SPU
      * @param pageDTO 查询信息
-     * @return List<Spu>
+     * @return List<SpuVO>
      */
     Page<SpuVO> selectSpuPage(PageDTO pageDTO);
 
@@ -56,4 +56,10 @@ public interface SpuService extends IService<Spu> {
      */
     List<SpuVO> getAll();
 
+    /**
+     * 获取指定id的spu信息
+     * @param ids id
+     * @return List<Spu>
+     */
+    List<Spu> getSpuList(List<Integer> ids);
 }

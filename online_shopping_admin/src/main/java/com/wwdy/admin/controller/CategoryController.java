@@ -86,4 +86,14 @@ public class CategoryController {
         List<CategoryVO> categories = categoryService.getCategories();
         return ResultUtil.success(categories);
     }
+
+    /**
+     * 获取根标签分类
+     * @return ResultVO<List<CategoryVO>>
+     */
+    @GetMapping("/root")
+    public ResultVO<List<CategoryVO>> getRootCategories(){
+        List<CategoryVO> categories = categoryService.getRootCategories();
+        return ResultUtil.success(categories);
+    }
 }

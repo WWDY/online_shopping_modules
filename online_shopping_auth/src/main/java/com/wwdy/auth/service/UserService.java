@@ -65,4 +65,11 @@ public interface UserService extends IService<UserDO> {
      * @return UserDO
      */
     UserDO getUserByToken(String token);
+
+
+    /**
+     * 签发openfeign token
+     * @return String
+     */
+    String openFeignTokenSignature();
 }

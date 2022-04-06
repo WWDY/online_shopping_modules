@@ -12,6 +12,7 @@
         <module>online_shopping_gateway</module>
         <module>online_shopping_oss</module>
         <module>online_shopping_admin</module>
+        <module>online_shopping_front</module>
         <module>commons</module>
     </modules>
 

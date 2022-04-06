@@ -39,6 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         //OpenFeign 注入时机在WebMvcConfiguration之后，在配置拦截器时会产生循环依赖问题，所以在使用时才获取代理对象
         UserClient userClient = applicationContext.getBean(UserClient.class);
         String value = request.getHeader(HEADER_NAME);
+        String feignToken = request.getHeader(FEIGN_TOKEN_HEADER_NAME);
         if(StrUtil.isNotEmpty(value)){
             String token = value.substring(HEADER_START.length());
             User user = userClient.getUser(token).getData();
@@ -48,6 +49,11 @@ public class AuthInterceptor implements HandlerInterceptor {
                 if (StrUtil.isNotEmpty(redisToken)) {
                     return true;
                 }
+            }
+        }else if(StrUtil.isNotEmpty(feignToken)){
+            String redisFeignToken = stringRedisTemplate.opsForValue().get(FEIGN_TOKEN_HEADER_NAME);
+            if(StrUtil.isNotEmpty(redisFeignToken) && StrUtil.equals(redisFeignToken, feignToken)){
+                return true;
             }
         }
         String res = objectMapper.writeValueAsString(ResultUtil.error(ResultEnum.AUTHENTICATION.getCode(), ResultEnum.AUTHENTICATION.getMessage()));
