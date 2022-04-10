@@ -12,6 +12,7 @@ import result.vo.PageVO;
 import result.vo.ResultVO;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author  wwdy
@@ -88,5 +89,30 @@ public class ShopController {
             return ResultUtil.success("删除成功");
         }
         return ResultUtil.error("删除失败");
+    }
+
+    /**
+     * 查询商品列表
+     * @param ids id列表
+     * @return ResultVO<List<Shop>>
+     */
+    @PostMapping("/list")
+    public ResultVO<List<Shop>> getShopListByIds(@RequestBody List<Integer> ids){
+        List<Shop> list = shopService.getShopListByIds(ids);
+        return ResultUtil.success(list);
+    }
+
+    /**
+     * 批量更新商品
+     * @param shops 商品列表
+     * @return ResultVO<List<Shop>>
+     */
+    @PutMapping("/list")
+    public ResultVO<String> updateShopList(@RequestBody List<Shop> shops){
+        System.out.println(shops);
+        if (shopService.updateShopList(shops)) {
+            return ResultUtil.success("","更新成功");
+        }
+        return ResultUtil.error("更新失败");
     }
 }

@@ -1,9 +1,11 @@
 package com.wwdy.auth.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wwdy.auth.pojo.UserDO;
 import com.wwdy.auth.pojo.dto.LoginByPhoneDTO;
 import com.wwdy.auth.pojo.dto.LoginDTO;
+import com.wwdy.auth.pojo.dto.PageDTO;
 import com.wwdy.auth.pojo.dto.UserDTO;
 
 /**
@@ -18,6 +20,13 @@ public interface UserService extends IService<UserDO> {
      * @return boolean
      */
     boolean register(UserDTO user);
+
+    /**
+     * 分页查找用户
+     * @param pageDTO 分页信息
+     * @return Page<UserDO>
+     */
+    Page<UserDO> selectUserPage(PageDTO pageDTO);
 
     /**
      * 发送验证码

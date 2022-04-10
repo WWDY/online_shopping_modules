@@ -23,6 +23,8 @@ public class JacksonSerializerConfig {
     public ObjectMapper objectMapper(){
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY);
         JavaTimeModule timeModule = new JavaTimeModule();
         timeModule.addSerializer(LocalDateTime.class, new JacksonSerializer.LocalDateTimeJsonSerializer());
         timeModule.addDeserializer(LocalDateTime.class, new JacksonSerializer.LocalDateTimeJsonDeserializer());

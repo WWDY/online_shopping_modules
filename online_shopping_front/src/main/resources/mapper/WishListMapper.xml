@@ -12,5 +12,21 @@
             <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
             <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+<!--    更新已经存在的收藏信息-->
+    <update id="updateExistWishList">
+        update online_shopping.wish_list
+        set status = #{status},
+            deleted = 0,
+            updated_time = #{updatedTime}
+        where user_id = #{userId}
+    </update>
+
+    <!--    查找商品是否收藏过-->
+    <select id="selectExistWishList" resultType="java.lang.Integer">
+        select count(user_id)
+        from online_shopping.wish_list
+        where user_id = #{userId}
+          and shop_id = #{shopId}
+    </select>
 
 </mapper>

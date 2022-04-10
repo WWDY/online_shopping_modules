@@ -3,10 +3,11 @@ package com.wwdy.front.feign.service;
 import com.wwdy.front.feign.pojo.dto.Page;
 import com.wwdy.front.feign.pojo.dto.Shop;
 import org.springframework.cloud.openfeign.SpringQueryMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import result.vo.PageVO;
 import result.vo.ResultVO;
+
+import java.util.List;
 
 /**
  * @author wwdy
@@ -29,4 +30,20 @@ public interface ShopService {
      */
     @GetMapping("/api/shop/{id}")
     ResultVO<Shop> getShopById(@PathVariable("id") Integer id);
+
+    /**
+     * 查询商品列表
+     * @param ids id列表
+     * @return ResultVO<List<Shop>>
+     */
+    @PostMapping("/api/shop/list")
+    ResultVO<List<Shop>> getShopListByIds(@RequestBody List<Integer> ids);
+
+    /**
+     * 批量更新商品
+     * @param shops 商品列表
+     * @return ResultVO<String>
+     */
+    @PutMapping("/api/shop/list")
+    ResultVO<String> updateShopList(@RequestBody List<Shop> shops);
 }

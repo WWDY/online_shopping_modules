@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import result.ResultUtil;
 import result.vo.PageVO;
 import result.vo.ResultVO;
+
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author wwdy
@@ -87,5 +89,15 @@ public class SliderShowController {
             return ResultUtil.success("删除成功");
         }
         return ResultUtil.error("删除失败");
+    }
+
+    /**
+     * 获取权重最高的三张轮播图
+     * @return ResultVO<List<SliderShow>>
+     */
+    @GetMapping("/top3")
+    public ResultVO<List<SliderShow>> getTop3ByWeight(){
+        List<SliderShow> res = sliderShowService.getThreeSliderShowsByWeight();
+        return ResultUtil.success(res);
     }
 }

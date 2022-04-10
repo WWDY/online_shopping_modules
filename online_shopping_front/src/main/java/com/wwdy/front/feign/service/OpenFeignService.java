@@ -12,6 +12,6 @@ public interface OpenFeignService {
      * 签发openfeign token
      * @return String
      */
-    @GetMapping("/api/openfeign/token")
+    @GetMapping("/api/openfeign/")
     String getOpenFeignToken();
 }

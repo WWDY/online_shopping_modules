@@ -39,9 +39,8 @@ public class WishListServiceImpl extends ServiceImpl<WishListMapper, WishList> i
         User user = authClient.getUserInfoByToken(token).getData();
         wishList.setUserId(user.getId());
         wishList.setStatus(true);
-        QueryWrapper<WishList> queryWrapper = new QueryWrapper<WishList>().eq("shop_id", wishList.getShopId()).eq("user_id", user.getId());
-        if(baseMapper.selectOne(queryWrapper) != null){
-            return 1;
+        if(baseMapper.selectExistWishList(wishList) > 0){
+            return baseMapper.updateExistWishList(wishList);
         }
         return baseMapper.insert(wishList);
     }

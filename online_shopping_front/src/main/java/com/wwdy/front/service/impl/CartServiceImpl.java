@@ -38,9 +38,8 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         User user = authClient.getUserInfoByToken(token).getData();
         cart.setUserId(user.getId());
         cart.setStatus(true);
-        QueryWrapper<Cart> queryWrapper = new QueryWrapper<Cart>().eq("shop_id", cart.getShopId()).eq("user_id", user.getId());
-        if(baseMapper.selectOne(queryWrapper) != null){
-            return 1;
+        if(baseMapper.selectExistCart(cart) > 0){
+            return baseMapper.updateExistCart(cart);
         }
         return baseMapper.insert(cart);
     }

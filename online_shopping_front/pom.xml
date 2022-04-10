@@ -24,6 +24,20 @@
             <artifactId>feign-httpclient</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.22.81.ALL</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>fastjson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

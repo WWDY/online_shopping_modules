@@ -11,6 +11,19 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface WishListMapper extends BaseMapper<WishList> {
 
+    /**
+     * 查找商品是否收藏过
+     * @param wishList 商品收藏信息
+     * @return int
+     */
+    int selectExistWishList(WishList wishList);
+
+    /**
+     * 更新已经存在的收藏信息
+     * @param wishList 收藏信息
+     * @return int
+     */
+    int updateExistWishList(WishList wishList);
 }
 
 

@@ -8,8 +8,25 @@
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
             <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
             <result property="deleted" column="deleted" jdbcType="INTEGER"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+<!--    更新已经存在的购物车信息-->
+    <update id="updateExistCart">
+        update online_shopping.cart
+        set status = #{status},
+            deleted = 0,
+            updated_time = #{updatedTime}
+        where user_id = #{userId}
+    </update>
+
+<!--    查找商品是否收加入购物车-->
+    <select id="selectExistCart" resultType="java.lang.Integer">
+        select count(user_id)
+        from online_shopping.cart
+        where user_id = #{userId}
+          and shop_id = #{shopId}
+    </select>
 
 </mapper>

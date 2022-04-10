@@ -16,7 +16,6 @@ import result.enums.ResultEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 import static constant.JwtConstant.*;
 
@@ -43,12 +42,15 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(StrUtil.isNotEmpty(value)){
             String token = value.substring(HEADER_START.length());
             User user = userClient.getUser(token).getData();
-            if(Optional.ofNullable(user).isPresent()){
-                String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
-                String redisToken = stringRedisTemplate.opsForValue().get(key);
-                if (StrUtil.isNotEmpty(redisToken)) {
-                    return true;
-                }
+            if(!user.getAdminRole()){
+                String res = objectMapper.writeValueAsString(ResultUtil.error(ResultEnum.AUTHORIZATION.getCode(), ResultEnum.AUTHORIZATION.getMessage()));
+                response.getWriter().println(res);
+                return false;
+            }
+            String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
+            String redisToken = stringRedisTemplate.opsForValue().get(key);
+            if (StrUtil.isNotEmpty(redisToken)) {
+                return true;
             }
         }else if(StrUtil.isNotEmpty(feignToken)){
             String redisFeignToken = stringRedisTemplate.opsForValue().get(FEIGN_TOKEN_HEADER_NAME);

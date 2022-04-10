@@ -12,6 +12,7 @@ import com.wwdy.admin.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -95,6 +96,37 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         queryWrapper.eq("parent_id",0);
         List<Category> categories = baseMapper.selectList(queryWrapper);
         return categoryConverter.convert(categories);
+    }
+
+    /**
+     * 获取子标签分类
+     * @param id id
+     * @return List<Integer>
+     */
+    @Override
+    public List<Integer> getRootAllChildrenIds(int id) {
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id",id);
+        //二级分类
+        List<Category> categories = baseMapper.selectList(queryWrapper);
+        List<Category> allCategories = list();
+        ArrayList<Integer> childrenIds = new ArrayList<>();
+        categories.forEach(category -> {
+            getChildrenCategoryIds(category.getId(), allCategories, childrenIds);
+        });
+        return childrenIds;
+    }
+
+    /**
+     * 根据二级父id查找所有三级子标签
+     * @param parentId id
+     */
+    protected void getChildrenCategoryIds(int parentId, List<Category> allCategories, List<Integer> childrenIds){
+        allCategories.forEach(category -> {
+            if(category.getParentId() == parentId){
+                childrenIds.add(category.getId());
+            }
+        });
     }
 
     /**

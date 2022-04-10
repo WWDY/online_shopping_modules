@@ -52,4 +52,9 @@ public class ShopListVO {
      * 是否收藏
      */
     private Boolean wishListStatus;
+
+    /**
+     * 库存
+     */
+    private Integer stock;
 }

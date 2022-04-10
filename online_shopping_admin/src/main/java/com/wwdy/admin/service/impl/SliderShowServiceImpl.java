@@ -1,5 +1,6 @@
 package com.wwdy.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwdy.admin.converter.SliderShowConverter;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -83,5 +85,17 @@ public class SliderShowServiceImpl extends ServiceImpl<SliderShowMapper, SliderS
     @Override
     public int delSliderShow(int id) {
         return baseMapper.deleteById(id);
+    }
+
+    /**
+     * 获取权重最高的三张轮播图
+     * @return List<SliderShow>
+     */
+    @Override
+    public List<SliderShow> getThreeSliderShowsByWeight() {
+        QueryWrapper<SliderShow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("weight")
+                .last("limit 0,3");
+        return baseMapper.selectList(queryWrapper);
     }
 }

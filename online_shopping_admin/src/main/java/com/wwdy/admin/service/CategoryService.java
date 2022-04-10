@@ -52,4 +52,11 @@ public interface CategoryService extends IService<Category> {
      * @return List<CategoryVO>
      */
     List<CategoryVO> getRootCategories();
+
+    /**
+     * 获取子标签分类
+     * @param id id
+     * @return List<Integer>
+     */
+    List<Integer> getRootAllChildrenIds(int id);
 }

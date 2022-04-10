@@ -31,4 +31,13 @@ public class CategoryController {
         return adminClient.getRootCategories();
     }
 
+
+    /**
+     * 获取所有分类标签（树形）
+     * @return ResultVO<List<CategoryVO>>
+     */
+    @GetMapping("/tree")
+    public ResultVO<List<Category>> getCategoriesTree(){
+        return adminClient.getTreeCategories();
+    }
 }

@@ -6,6 +6,8 @@ import com.wwdy.admin.pojo.Shop;
 import com.wwdy.admin.pojo.dto.PageDTO;
 import com.wwdy.admin.pojo.update.ShopUpdate;
 
+import java.util.List;
+
 /**
  * @author  wwdy
  * @date  2022/3/29 14:43
@@ -45,4 +47,18 @@ public interface ShopService extends IService<Shop> {
      * @return int
      */
     int delShop(int id);
+
+    /**
+     * 查询商品列表
+     * @param ids id列表
+     * @return List<Shop>
+     */
+    List<Shop> getShopListByIds(List<Integer> ids);
+
+    /**
+     * 批量更新商品
+     * @param shopList 商品列表
+     * @return boolean
+     */
+    boolean updateShopList(List<Shop> shopList);
 }

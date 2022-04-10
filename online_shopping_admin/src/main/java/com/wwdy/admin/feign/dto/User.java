@@ -23,6 +23,11 @@ public class User {
     private String password;
 
     /**
+     * 是否拥有管理员角色
+     */
+    private Boolean adminRole;
+
+    /**
      * 姓名
      */
     private String name;

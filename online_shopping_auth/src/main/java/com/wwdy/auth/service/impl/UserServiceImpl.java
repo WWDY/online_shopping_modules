@@ -3,6 +3,7 @@ package com.wwdy.auth.service.impl;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwdy.auth.config.JwtConfigProperties;
 import com.wwdy.auth.converter.UserConverter;
@@ -12,10 +13,7 @@ import com.wwdy.auth.event.DelUsedCodeEvent;
 import com.wwdy.auth.exception.CodeErrorException;
 import com.wwdy.auth.mapper.UserMapper;
 import com.wwdy.auth.pojo.UserDO;
-import com.wwdy.auth.pojo.dto.LoginByPhoneDTO;
-import com.wwdy.auth.pojo.dto.LoginDTO;
-import com.wwdy.auth.pojo.dto.SendMessageDTO;
-import com.wwdy.auth.pojo.dto.UserDTO;
+import com.wwdy.auth.pojo.dto.*;
 import com.wwdy.auth.response.SendMessageResponse;
 import com.wwdy.auth.service.MessageService;
 import com.wwdy.auth.service.UserService;
@@ -173,8 +171,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
                 String token = cookie.getValue();
                 try {
                     Claims claims = jwtParser.parseClaimsJws(token).getBody();
-                    String username = claims.getId();
-                    UserDO user = baseMapper.selectById(username);
+                    String userId = claims.getId();
+                    UserDO user = baseMapper.selectById(userId);
                     if (Optional.ofNullable(user).isPresent()) {
                         String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
                         String redisToken = stringRedisTemplate.opsForValue().get(key);
@@ -211,8 +209,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         if(StrUtil.isNotEmpty(value)){
             String token = value.substring(HEADER_START.length());
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
-            String username = claims.getId();
-            UserDO user = baseMapper.selectOne(new QueryWrapper<UserDO>().eq("username", username));
+            String userId = claims.getId();
+            UserDO user = baseMapper.selectById(userId);
             if(Optional.ofNullable(user).isPresent()){
                 String key = JWT_TOKEN_PREFIX + user.getId() + "-" + user.getUsername() + "-" + user.getPhone();
                 stringRedisTemplate.delete(key);
@@ -297,5 +295,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,UserDO> implements U
         String token = jwtBuilder.setClaims(claims).compact();
         stringRedisTemplate.opsForValue().set(FEIGN_TOKEN_HEADER_NAME, token, jwtConfigProperties.getJwtExpirationInMs(), TimeUnit.MILLISECONDS);
         return token;
+    }
+
+    /**
+     * 分页查找用户
+     * @param pageDTO 分页信息
+     * @return Page<UserDO>
+     */
+    @Override
+    public Page<UserDO> selectUserPage(PageDTO pageDTO) {
+        Page<UserDO> page = new Page<>();
+        page.setSize(pageDTO.getSize());
+        page.setCurrent(pageDTO.getPage());
+        return baseMapper.selectPage(page,null);
     }
 }

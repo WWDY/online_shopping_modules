@@ -1,6 +1,7 @@
 package com.wwdy.admin.service.impl;
 
 import cn.hutool.http.HtmlUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwdy.admin.converter.ShopConverter;
@@ -102,6 +103,27 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements Sh
         return baseMapper.deleteById(id);
     }
 
+    /**
+     * 查询商品列表
+     * @param ids id列表
+     * @return List<Shop>
+     */
+    @Override
+    public List<Shop> getShopListByIds(List<Integer> ids) {
+        QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id", ids);
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 批量更新商品
+     * @param shopList 商品列表
+     * @return boolean
+     */
+    @Override
+    public boolean updateShopList(List<Shop> shopList) {
+        return updateBatchById(shopList);
+    }
 }
 
 

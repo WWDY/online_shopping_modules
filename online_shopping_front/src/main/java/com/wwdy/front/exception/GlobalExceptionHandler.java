@@ -48,6 +48,7 @@ public class GlobalExceptionHandler {
         error.setDomain(domain);
         error.setException(e.getClass().getName());
         log.error("[error] exception = {},===> request_url = {}",e,request.getRequestURL());
+        e.printStackTrace();
         return ResultUtil.error(ResultEnum.UNEXPECTED_ERROR.getCode(), e.getMessage(), error);
     }
 

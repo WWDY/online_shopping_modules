@@ -96,4 +96,15 @@ public class CategoryController {
         List<CategoryVO> categories = categoryService.getRootCategories();
         return ResultUtil.success(categories);
     }
+
+    /**
+     * 获取对应根目录的所有三级分类
+     * @param id 父id
+     * @return ResultVO<List<Integer>>
+     */
+    @GetMapping("/third/{id}")
+    public ResultVO<List<Integer>> getAllThreadCategoriesByRootId(@PathVariable("id") Integer id){
+        List<Integer> rootAllChildrenIds = categoryService.getRootAllChildrenIds(id);
+        return ResultUtil.success(rootAllChildrenIds);
+    }
 }

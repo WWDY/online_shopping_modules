@@ -6,6 +6,8 @@ import com.wwdy.admin.pojo.SliderShow;
 import com.wwdy.admin.pojo.dto.PageDTO;
 import com.wwdy.admin.pojo.update.SliderShowUpdate;
 
+import java.util.List;
+
 /**
  * @author  wwdy
  * @date  2022/3/19 16:25
@@ -46,4 +48,10 @@ public interface SliderShowService extends IService<SliderShow> {
      * @return int
      */
     int delSliderShow(int id);
+
+    /**
+     * 获取权重最高的三张轮播图
+     * @return List<SliderShow>
+     */
+    List<SliderShow> getThreeSliderShowsByWeight();
 }
